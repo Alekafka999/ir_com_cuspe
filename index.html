@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Cuspes do Dalai Lhama</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="app-shell">
+        <section class="calculator-panel" aria-labelledby="page-title">
+            <div class="mascot-frame">
+                <img src="dalailhama.png" alt="Dalai Lhama encarando o contribuinte" class="lhama-image">
+                <p class="lhama-caption">"Eu cuspo porque sim." - Dalai Lhama, Meta AI, 2025</p>
+            </div>
+
+            <div class="intro">
+                <p class="eyebrow">Tecnologia Tributaria Lhamistica 2025</p>
+                <h1 id="page-title">Simulador de Cuspes por Faixa de Imposto</h1>
+                <p>
+                    Um experimento de humor fiscal: informe um salario mensal e descubra
+                    quantas cuspidas simbolicas a lhama dispara conforme a faixa de IR.
+                </p>
+            </div>
+
+            <form id="tax-form" class="tax-form">
+                <label for="salary">Salario mensal</label>
+                <div class="input-row">
+                    <span aria-hidden="true">R$</span>
+                    <input
+                        id="salary"
+                        name="salary"
+                        inputmode="decimal"
+                        autocomplete="off"
+                        placeholder="4500,00"
+                        required
+                    >
+                </div>
+                <button type="submit">Calcular cuspida</button>
+            </form>
+
+            <section id="result" class="result-card" aria-live="polite" hidden>
+                <p class="result-label">Faixa de IR</p>
+                <strong id="tax-band"></strong>
+                <div id="spit-meter" class="spit-meter" aria-label="Intensidade da cuspida"></div>
+                <p id="result-copy"></p>
+            </section>
+        </section>
+
+        <aside class="about-panel" aria-label="Resumo do projeto">
+            <h2>Do que se trata?</h2>
+            <p>
+                Este repositorio guarda uma piada funcional em forma de calculadora:
+                quanto maior a faixa do Imposto de Renda, maior a intensidade da
+                "cuspida" da mascote.
+            </p>
+
+            <div class="band-list">
+                <div><span>Isento</span><strong>sem cuspe</strong></div>
+                <div><span>7,5%</span><strong>1 cuspe</strong></div>
+                <div><span>15%</span><strong>2 cuspes</strong></div>
+                <div><span>22,5%</span><strong>3 cuspes</strong></div>
+                <div><span>27,5%</span><strong>4 cuspes</strong></div>
+            </div>
+
+            <p class="note">
+                As faixas seguem a tabela historica usada no projeto original e nao
+                representam aconselhamento tributario.
+            </p>
+
+            <a
+                class="source-link"
+                href="https://chatgpt.com/share/692c5a79-e308-800f-b1f9-004266e4b013"
+                target="_blank"
+                rel="noreferrer"
+            >
+                Abrir conversa original
+            </a>
+        </aside>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Simulador de Cuspes do Dalai Lhama - Tecnologia Tributaria Lhamistica</p>
+        <p>
+            Criado por
+            <a href="https://github.com/Alekafka999?tab=repositories" target="_blank" rel="noreferrer">1 humana</a>
+            e 3 IAs:
+            <a href="https://chatgpt.com" target="_blank" rel="noreferrer">ChatGPT</a>,
+            <a href="https://www.meta.ai" target="_blank" rel="noreferrer">Meta AI</a>
+            e
+            <a href="https://aws.amazon.com/q/" target="_blank" rel="noreferrer">Amazon Q</a>.
+        </p>
+    </footer>
+
+    <script>
+        const bands = [
+            { max: 1903.98, label: "Isento", spits: 0, copy: "A lhama observa em silencio. Por enquanto." },
+            { max: 2826.65, label: "7,5%", spits: 1, copy: "Uma cuspida protocolar, quase educativa." },
+            { max: 3751.05, label: "15%", spits: 2, copy: "Duas cuspidas e um olhar de auditoria emocional." },
+            { max: 4664.68, label: "22,5%", spits: 3, copy: "Tres cuspidas: a planilha ja pediu um copo d'agua." },
+            { max: Infinity, label: "27,5%", spits: 4, copy: "Quatro cuspidas. A lhama entrou em modo Receita Federal." }
+        ];
+
+        const form = document.querySelector("#tax-form");
+        const salaryInput = document.querySelector("#salary");
+        const result = document.querySelector("#result");
+        const taxBand = document.querySelector("#tax-band");
+        const spitMeter = document.querySelector("#spit-meter");
+        const resultCopy = document.querySelector("#result-copy");
+
+        function parseCurrency(value) {
+            const normalized = value
+                .replace(/\s/g, "")
+                .replace(/\./g, "")
+                .replace(",", ".");
+
+            return Number.parseFloat(normalized);
+        }
+
+        function findBand(salary) {
+            return bands.find((band) => salary <= band.max);
+        }
+
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const salary = parseCurrency(salaryInput.value);
+            if (!Number.isFinite(salary) || salary < 0) {
+                salaryInput.setCustomValidity("Informe um salario valido.");
+                salaryInput.reportValidity();
+                return;
+            }
+
+            salaryInput.setCustomValidity("");
+            const band = findBand(salary);
+            taxBand.textContent = band.label;
+            spitMeter.textContent = band.spits ? "💦".repeat(band.spits) : "💁";
+            resultCopy.textContent = band.copy;
+            result.hidden = false;
+            result.classList.remove("is-visible");
+            requestAnimationFrame(() => result.classList.add("is-visible"));
+        });
+    </script>
+</body>
+</html>

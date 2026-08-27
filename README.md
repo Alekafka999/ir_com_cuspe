@@ -3,6 +3,22 @@ Tecnologia Tributária Lhamística™ — Versão Oficial 2025
 
 Bem-vindo ao primeiro simulador tributário do mundo baseado na intensidade de cuspidas de Llama da Meta AI, indignada com a carga tributária brasileira.
 
+## Como abrir localmente
+
+Este projeto agora tem uma versão estática em `index.html`, então dá para ver a ideia sem instalar PHP:
+
+```bash
+node server.js 8093
+```
+
+Depois abra:
+
+```text
+http://127.0.0.1:8093/
+```
+
+Também é possível abrir `index.html` direto no navegador.
+
 Este projeto nasceu do cruzamento perfeito entre:
 - PHP;
 - Humor ácido; e
